@@ -4,9 +4,9 @@ import yaml
 from graph_construction import GraphConstructor
 import trainer
 import torch
+import matplotlib.pyplot as plt
 from models.gcn import RGCN
 from importlib import reload
-reload(trainer)
 
 #%% Construct Graphs
 # Open the YAML file
@@ -47,6 +47,44 @@ model_trainer = trainer.Trainer(
     (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader))
 # Train
 model_trainer.train(epochs=500)
-#%% Plotting the results
 
+#%% Plotting the results
+plt.plot(range(1, len(model_trainer.history["train_losses"]) + 1), model_trainer.history['train_losses'],
+         label='Train Loss', color='red')
+plt.plot(range(1, len(model_trainer.history["val_losses"]) + 1), model_trainer.history['val_losses'],
+         label='Validation Loss', color='blue')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+plt.plot(range(1, len(model_trainer.history["train_acc"]) + 1), model_trainer.history['train_acc'],
+         label='Train Accuracy', color='red')
+plt.plot(range(1, len(model_trainer.history["val_acc"]) + 1), model_trainer.history['val_acc'],
+         label='Validation Accuracy', color='blue')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+#%% Testing trained model
+print("Testing the trained model")
+
+# Initiate the data params
+graph_constructor_test = GraphConstructor(data_params=yaml_file_params, assembly=assembly)
+
+# Load annotation and construct graphs
+graph_constructor_test.load_data_and_labels(data_type="testing")
+processed_objects_path = yaml_file_params[assembly]["processed_objects_information"]["testing"]["path"]
+window_size = yaml_file_params[assembly]["processed_objects_information"]["testing"]["window_size"]
+overlap = yaml_file_params[assembly]["processed_objects_information"]["testing"]["overlap"]
+graph_constructor_test.construct_graphs(processed_objects_path, window_size=window_size, overlap=overlap)
+
+# Create DataLoaders
+test_data_generator = trainer.TestingDataGenerator(batch_size=128)
+test_data_generator.generate_data(graph_constructor.data_list)
+test_data_generator.initiate_dataloaders()
+
+# Test on a new data
+result = model_trainer.test_model(test_data_generator.test_dataloader)
 

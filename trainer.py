@@ -75,6 +75,41 @@ class TrainingDataGenerator:
         print("Class weights: ", self.class_weights)
 
 
+class TestingDataGenerator:
+
+    def __init__(self, batch_size: int):
+
+        # Initialize
+        self.batch_size = batch_size
+        self.test_dataset = None
+        self.test_dataloader = None
+        self.test_labels = None
+        self.unique_labels = None
+
+    def generate_data(self, data_items, shuffle=False):
+
+        if shuffle:
+            random.shuffle(data_items)
+
+        # Print the available labels
+        self.unique_labels = set()
+        for data in data_items:
+            self.unique_labels.add(data["frame_window"].y.item())
+        self.unique_labels = list(self.unique_labels)
+        print("The list of available labels: ", end="")
+        print(self.unique_labels)
+
+        self.test_dataset = data_items
+        print(f'Number of testing graphs: {len(self.test_dataset)}')
+
+    def initiate_dataloaders(self, shuffle=False):
+
+        # Generate DataLoaders
+        self.test_dataloader = DataLoader(self.test_dataset, batch_size=self.batch_size, pin_memory=True,
+                                          shuffle=shuffle)
+        self.test_labels = torch.tensor([data['frame_window'].y for data in self.test_dataset])
+
+
 class Trainer:
 
     def __init__(self, model, optimizer, loss_fn, dataloaders: tuple, gpu_ids: tuple = (3,), es_patience=30):
@@ -207,6 +242,37 @@ class Trainer:
                 all_labels_epoch.extend(data['frame_window'].y.cpu().numpy())
 
         return total, total_batch, loss_val, correct, all_labels_epoch, all_preds_epoch
+
+    def test_model(self, test_loader):
+
+        # Model in eval mode
+        self.model.eval()
+
+        # Params
+        all_preds_epoch = []
+        all_labels_epoch = []
+        correct = 0
+        total = 0
+        total_batch = 0
+        loss_test = 0.0
+
+        with torch.no_grad():
+            for batch_id, data in enumerate(tqdm(test_loader)):
+
+                # Forward
+                data = data.to(self.device)
+                output = self.model(data)
+                pred = output.argmax(dim=1)
+
+                total += len(data)
+                total_batch += 1
+                correct += int((pred == data['frame_window'].y).sum())
+                loss = self.loss_fn(output, data['frame_window'].y)
+                loss_test += loss.item()
+                all_preds_epoch.extend(pred.cpu().numpy())
+                all_labels_epoch.extend(data['frame_window'].y.cpu().numpy())
+
+        return total, total_batch, loss_test, correct, all_labels_epoch, all_preds_epoch
 
 
 class EarlyStopper:

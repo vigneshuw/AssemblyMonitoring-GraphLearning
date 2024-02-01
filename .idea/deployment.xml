@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="On explicit save action" promptOnRemoteOverwrite="CHECK_CONTENT" serverName="vselvaraj@min-gpu.me.wisc.edu:22 password (5)" deleteMissingItems="true" createEmptyFolders="true" remoteFilesAllowedToDisappearOnAutoupload="false" notifyRemoteChanges="true">
+  <component name="PublishConfigData" autoUpload="Always" promptOnRemoteOverwrite="CHECK_CONTENT" serverName="vselvaraj@min-gpu.me.wisc.edu:22 password (2)" deleteMissingItems="true" createEmptyFolders="true" remoteFilesAllowedToDisappearOnAutoupload="false" notifyRemoteChanges="true">
     <serverData>
-      <paths name="vselvaraj@min-gpu.me.wisc.edu:22 password (5)">
+      <paths name="vselvaraj@min-gpu.me.wisc.edu:22 password">
         <serverdata>
           <mappings>
-            <mapping deploy="/projects/action_localization/action-localization-graphModelling" local="$PROJECT_DIR$" />
+            <mapping deploy="/projects/action_localization/action-localization-graphModelling" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="vselvaraj@min-gpu.me.wisc.edu:22 password (2)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/vselvaraj/projects/action_localization/action-localization-graphModelling" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

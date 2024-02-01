@@ -26,12 +26,12 @@ class GraphConstructor:
         # Constructed Graphs
         self.data_list = []
 
-    def load_data_and_labels(self):
+    def load_data_and_labels(self, data_type="training"):
 
         assembly_operation = self.data_params[self.assembly]
 
         # Training data location
-        training_videos_dir = os.path.join(os.path.dirname(os.getcwd()), *assembly_operation["data_dir"]["training"])
+        training_videos_dir = os.path.join(os.path.dirname(os.getcwd()), *assembly_operation["data_dir"][data_type])
         training_video_names = [os.path.join(training_videos_dir, cycle) for cycle in os.listdir(training_videos_dir) if
                                 cycle.split(".")[-1] == "mp4"]
         training_annotation_names = ["human_" + cycle.split("/")[-1][:-4] + ".csv" for cycle in training_video_names]

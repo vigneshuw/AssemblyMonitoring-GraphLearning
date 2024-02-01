@@ -50,5 +50,8 @@ L10:
       window_size: 30
       overlap: 15
     testing:
+      path: /data1/GCNN/RPN_Test_Results
+      window_size: 30
+      overlap: 15
 
 
