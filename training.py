@@ -6,7 +6,7 @@ import trainer
 import torch
 import matplotlib.pyplot as plt
 from models.gcn import RGCN
-from importlib import reload
+from sklearn.metrics import f1_score, classification_report
 
 #%% Construct Graphs
 # Open the YAML file
@@ -88,3 +88,8 @@ test_data_generator.initiate_dataloaders()
 # Test on a new data
 result = model_trainer.test_model(test_data_generator.test_dataloader)
 
+#%% Evaluation parameters
+test_f1_score = f1_score(result[-2], result[-1], average="weighted")
+print(f"F1-Score across the testing data is {test_f1_score}")
+test_classification_report = classification_report(result[-2], result[-1])
+print(test_classification_report)
