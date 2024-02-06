@@ -12,7 +12,7 @@
       <paths name="vselvaraj@min-gpu.me.wisc.edu:22 password (2)">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/vselvaraj/projects/action_localization/action-localization-graphModelling" local="$PROJECT_DIR$" />
+            <mapping deploy="projects/action_localization/action-localization-graphModelling" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

@@ -40,10 +40,6 @@ L10:
       - L10
       - cycles
       - testing
-  model_save_dir:
-    - trained_models
-    - L10-PT
-    - c3d
   processed_objects_information:
     training:
       path: /data1/GCNN/RPN_Train_Results

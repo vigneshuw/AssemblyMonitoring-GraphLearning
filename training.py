@@ -93,3 +93,15 @@ test_f1_score = f1_score(result[-2], result[-1], average="weighted")
 print(f"F1-Score across the testing data is {test_f1_score}")
 test_classification_report = classification_report(result[-2], result[-1])
 print(test_classification_report)
+
+#%% Save the model
+save_dir = os.path.join(os.getcwd(), "trained_models")
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
+
+items_to_save = {
+    "history": model_trainer.history,
+    "model_state_dict": model.state_dict(),
+    "test_results": result
+}
+torch.save(items_to_save, os.path.join(save_dir, "gcnn_L10.pt"))
