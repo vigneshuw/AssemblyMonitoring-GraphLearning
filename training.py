@@ -67,6 +67,14 @@ plt.ylabel('Accuracy')
 plt.legend()
 plt.show()
 
+#%% Evaluate on the test data loader
+result = model_trainer.test_model(data_generator.test_dataloader)
+test_f1_score = f1_score(result[-2], result[-1], average="weighted")
+print(f"F1-Score across the testing data is {test_f1_score}")
+test_classification_report = classification_report(result[-2], result[-1])
+print(test_classification_report)
+
+
 #%% Testing trained model
 print("Testing the trained model")
 
@@ -82,7 +90,7 @@ graph_constructor_test.construct_graphs(processed_objects_path, window_size=wind
 
 # Create DataLoaders
 test_data_generator = trainer.TestingDataGenerator(batch_size=128)
-test_data_generator.generate_data(graph_constructor.data_list)
+test_data_generator.generate_data(graph_constructor_test.data_list)
 test_data_generator.initiate_dataloaders()
 
 # Test on a new data
@@ -101,7 +109,14 @@ if not os.path.exists(save_dir):
 
 items_to_save = {
     "history": model_trainer.history,
-    "model_state_dict": model.state_dict(),
+    "model": {
+        "model_state_dict": model_trainer.model.state_dict(),
+        "in_channels": in_channels,
+        "hidden_channels": hidden_channels,
+        "num_layers": num_layers,
+        "output_channels": output_channels
+    },
     "test_results": result
 }
 torch.save(items_to_save, os.path.join(save_dir, "gcnn_L10.pt"))
+

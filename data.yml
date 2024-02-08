@@ -30,23 +30,15 @@ AssemblyDemo:
 L10:
   # Automatically looks for the training directory
   data_dir:
-    training:
-      - DATA
-      - L10
-      - cycles
-      - training
-    testing:
-      - DATA
-      - L10
-      - cycles
-      - testing
+    training: /data1/GCNN/L10_Combined/
+    testing: /data1/GCNN/L10_Combined_Testing/
   processed_objects_information:
     training:
-      path: /data1/GCNN/RPN_Train_Results
+      path: /data1/GCNN/RPN_Combined
       window_size: 30
       overlap: 15
     testing:
-      path: /data1/GCNN/RPN_Test_Results
+      path: /data1/GCNN/L10_Combined_Testing_RPN
       window_size: 30
       overlap: 15
 

@@ -7,7 +7,7 @@ from torch_geometric.nn import global_mean_pool, global_max_pool, global_add_poo
 
 class RGCN(nn.Module):
 
-    def __init__(self, in_channels, hidden_channels, out_channels, num_layers):
+    def __init__(self, in_channels, hidden_channels, out_channels, num_layers, is_realtime=False):
 
         super(RGCN, self).__init__()
         self.convs1 = torch.nn.ModuleList()
@@ -43,11 +43,17 @@ class RGCN(nn.Module):
             self.batch_norms2.append(bn2)
             self.batch_norms3.append(bn3)
 
+        # Case of real-time inference
+        self.is_realtime = is_realtime
+
     def forward(self, data):
         x_dict = data.x_dict
         edge_index_dict = data.edge_index_dict
         edge_weight_dict = data.edge_weight_dict
-        batch = data['frame_window'].batch
+        if self.is_realtime:
+            batch = torch.tensor([1], dtype=torch.long)
+        else:
+            batch = data['frame_window'].batch
 
         for conv1, conv2, conv3, bn1, bn2, bn3 in zip(self.convs1, self.convs2, self.convs3,
                                                       self.batch_norms1, self.batch_norms2, self.batch_norms3):
