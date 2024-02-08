@@ -44,7 +44,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.00001)
 loss_fn = torch.nn.CrossEntropyLoss(weight=data_generator.class_weights)
 model_trainer = trainer.Trainer(
     model, optimizer, loss_fn,
-    (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader))
+    (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
+    gpu_ids=(2, ))
 # Train
 model_trainer.train(epochs=500)
 
