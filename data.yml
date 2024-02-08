@@ -1,45 +1,15 @@
-# L10 Assembly Operation
-# L10:
-#   # Automatically looks for the training directory
-#   data_dir:
-      
-#     - DATA
-#     - L10
-#     - cycles
-#     - training
-#   model_save_dir:
-#     - trained_models
-#     - L10-PT
-#     - c3d
-#   processed_video_paths: null
-
-
-# Demo Assembly created by us
-AssemblyDemo:
-  data_dir:
-    - DATA
-    - AssemblyDemo
-    - cycles
-    - training
-  model_save_dir:
-    - trained_models
-    - AssemblyDemo-PT
-    - c3d
-  processed_video_paths: null
-  
 L10:
   # Automatically looks for the training directory
   data_dir:
-    training: /data1/GCNN/L10_Combined/
-    testing: /data1/GCNN/L10_Combined_Testing/
+    training: /home/vselvaraj/projects/action_localization/DATA/L10/cycles/training
+    testing: /home/vselvaraj/projects/action_localization/DATA/L10/cycles/testing
   processed_objects_information:
     training:
-      path: /data1/GCNN/RPN_Combined
+      path: /data1/GCNN/RPN_Train_Results
       window_size: 30
-      overlap: 15
+      overlap: 20
     testing:
-      path: /data1/GCNN/L10_Combined_Testing_RPN
+      path: /data1/GCNN/RPN_Test_Results
       window_size: 30
-      overlap: 15
-
+      overlap: 20
 
