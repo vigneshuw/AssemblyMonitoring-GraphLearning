@@ -11,7 +11,7 @@ from torch_geometric.data import HeteroData
 
 class GraphConstructor:
 
-    def __init__(self, data_params: dict, assembly: str) -> None:
+    def __init__(self, data_params: dict = None, assembly: str = None) -> None:
 
         # Initialize the variables
         self.data_params = data_params
@@ -27,6 +27,10 @@ class GraphConstructor:
         self.data_list = []
 
     def load_data_and_labels(self, data_type="training"):
+
+        if self.data_params is None:
+            print("Cannot be used to load data, as 'data_params' is `None`")
+            return None
 
         assembly_operation = self.data_params[self.assembly]
 
@@ -45,6 +49,19 @@ class GraphConstructor:
         self.training_annotations_fullpath = [os.path.join(training_videos_dir, annotation_name) for annotation_name in
                                               training_annotation_names]
         sys.stdout.write("Videos and annotations loaded\n")
+
+    def process_single_video(self, processed_objects_path, video_path, annotation_path, window_size, overlap):
+
+        self.training_videos_fullpath = [video_path]
+        self.training_annotations_fullpath = [annotation_path]
+
+        # The path will be reconstructed later
+        temp_len = len(processed_objects_path.split(os.sep)[-1])
+        processed_objects_path = processed_objects_path[0:-temp_len]
+
+        self.construct_graphs(processed_objects_path, window_size, overlap)
+
+        return self.data_list
 
     def construct_graphs(self, processed_objects_path: str, window_size: int, overlap: int):
 

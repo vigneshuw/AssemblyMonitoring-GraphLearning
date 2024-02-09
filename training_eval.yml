@@ -1,0 +1,19 @@
+graph:
+  processed_graphs: /data/ssm/assembly_monitoring/graph_modelling/processed_data
+  window: 30
+  overlap: 15
+
+training:
+  split_props:
+    - 2
+    - 5
+    - 10
+    - 15
+    - 20
+    - 25
+    - 30
+    - 35
+    - 40
+    - 45
+    - 50
+  batch_size: 128
