@@ -75,4 +75,3 @@ class RGCN(nn.Module):
         out = F.dropout(out, p=0.5, training=self.training)
         out = self.lin2(out)
         return out
-

@@ -8,8 +8,10 @@ L10:
       path: /data1/GCNN/RPN_Train_Results
       window_size: 30
       overlap: 20
+      selected_class: 12
     testing:
       path: /data1/GCNN/RPN_Test_Results
       window_size: 30
       overlap: 20
+      selected_class: 12
 

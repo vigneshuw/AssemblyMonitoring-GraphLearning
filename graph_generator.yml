@@ -11,3 +11,4 @@ output_path: /data/ssm/assembly_monitoring/graph_modelling/processed_data
 graph:
   window: 30
   overlap: 29
+  selected_class: 12

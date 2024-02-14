@@ -14,7 +14,7 @@ video_object_paths = cfg['video_object_paths']
 # Graph Information
 graph_window = cfg['graph']["window"]
 graph_overlap = cfg['graph']["overlap"]
-
+selected_class = cfg['graph']["selected_class"]
 # List all the videos inside the object paths
 video_object_locations = {}
 for video_object_path in video_object_paths:
@@ -47,10 +47,10 @@ for video_path in video_paths:
 
         # Construct graphs
         graph_constructor.process_single_video(video_object_full_path, video_data_full_path,
-                                               video_annotation_full_path, graph_window, graph_overlap)
+                                               video_annotation_full_path, graph_window, graph_overlap, selected_class)
 
         # Save the output
-        save_path = os.path.join(output_path, video_name.split(".")[0] + ".pkl")
+        save_path = os.path.join(output_path, video_name.split(".")[0])
 
         with open(save_path, "wb") as fhandle:
             pickle.dump(graph_constructor.data_list,  fhandle, protocol=pickle.HIGHEST_PROTOCOL)

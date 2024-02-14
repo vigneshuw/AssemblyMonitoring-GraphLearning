@@ -165,7 +165,7 @@ class Trainer:
             correct_train = 0
             total = 0
             total_batch = 0
-            # Reset to training 
+            # Reset to training
             self.model.train()
             for batch_id, data in enumerate(tqdm(self.train_dataloader)):
                 # Forward

@@ -22,8 +22,9 @@ graph_constructor.load_data_and_labels()
 processed_objects_path = yaml_file_params[assembly]["processed_objects_information"]["training"]["path"]
 window_size = yaml_file_params[assembly]["processed_objects_information"]["training"]["window_size"]
 overlap = yaml_file_params[assembly]["processed_objects_information"]["training"]["overlap"]
-graph_constructor.construct_graphs(processed_objects_path, window_size=window_size, overlap=overlap)
-
+selected_class = yaml_file_params[assembly]["processed_objects_information"]["training"]["selected_class"]
+graph_constructor.construct_graphs(processed_objects_path, window_size=window_size, overlap=overlap,
+                                   selected_class=selected_class)
 #%% Create DataLoaders
 data_generator = trainer.TrainingDataGenerator(proportion_valid=0.3, proportion_test=0.5, batch_size=128)
 data_generator.generate_data(graph_constructor.data_list)
@@ -87,7 +88,9 @@ graph_constructor_test.load_data_and_labels(data_type="testing")
 processed_objects_path = yaml_file_params[assembly]["processed_objects_information"]["testing"]["path"]
 window_size = yaml_file_params[assembly]["processed_objects_information"]["testing"]["window_size"]
 overlap = yaml_file_params[assembly]["processed_objects_information"]["testing"]["overlap"]
-graph_constructor_test.construct_graphs(processed_objects_path, window_size=window_size, overlap=overlap)
+selected_class = yaml_file_params[assembly]["processed_objects_information"]["testing"]["selected_class"]
+graph_constructor_test.construct_graphs(processed_objects_path, window_size=window_size, overlap=overlap,
+                                        selected_class=selected_class)
 
 # Create DataLoaders
 test_data_generator = trainer.TestingDataGenerator(batch_size=128)
@@ -120,4 +123,3 @@ items_to_save = {
     "test_results": result
 }
 torch.save(items_to_save, os.path.join(save_dir, "gcnn_L10.pt"))
-

@@ -121,7 +121,7 @@ def bb_intersection_over_union(boxA, boxB):
     return iou
 
 
-def construct_iou_adjacency_matrix(frame_window_classes, frame_window_boxes, total_object_count):
+def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_boxes: object, total_object_count: object, selected_class: int) -> object:
     # Initialize the adjacency matrix for the entire frame window
     iou_matrix_list = []
     class_indices = []
@@ -168,11 +168,11 @@ def construct_iou_adjacency_matrix(frame_window_classes, frame_window_boxes, tot
                 continue
             if frame_class_i != frame_class_j:
                 continue
-            elif frame_class_i == 12 and frame_class_j != 12:
+            elif frame_class_i == selected_class and frame_class_j != selected_class:
                 continue
-            elif frame_class_i != 12 and frame_class_j == 12:
+            elif frame_class_i != selected_class and frame_class_j == selected_class:
                 continue
-            elif frame_class_i != 12 and frame_class_j != 12:
+            elif frame_class_i != selected_class and frame_class_j != selected_class:
                 continue
             else:
                 iou = bb_intersection_over_union(frame_box_i, frame_box_j)
@@ -193,4 +193,3 @@ def construct_iou_adjacency_matrix(frame_window_classes, frame_window_boxes, tot
     iou_intra_matrix = torch.tensor(iou_intra_matrix, dtype=torch.float32)
 
     return iou_intra_matrix, iou_inter_matrix
-

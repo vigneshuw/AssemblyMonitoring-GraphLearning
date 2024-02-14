@@ -23,6 +23,7 @@ class GraphConstructor:
         self.processed_objects_path = None
         self.window_size = None
         self.overlap = None
+        self.selected_class = None
         # Constructed Graphs
         self.data_list = []
 
@@ -50,7 +51,8 @@ class GraphConstructor:
                                               training_annotation_names]
         sys.stdout.write("Videos and annotations loaded\n")
 
-    def process_single_video(self, processed_objects_path, video_path, annotation_path, window_size, overlap):
+    def process_single_video(self, processed_objects_path, video_path, annotation_path, window_size, overlap,
+                             selected_class):
 
         self.training_videos_fullpath = [video_path]
         self.training_annotations_fullpath = [annotation_path]
@@ -59,15 +61,16 @@ class GraphConstructor:
         temp_len = len(processed_objects_path.split(os.sep)[-1])
         processed_objects_path = processed_objects_path[0:-temp_len]
 
-        self.construct_graphs(processed_objects_path, window_size, overlap)
+        self.construct_graphs(processed_objects_path, window_size, overlap, selected_class)
 
         return self.data_list
 
-    def construct_graphs(self, processed_objects_path: str, window_size: int, overlap: int):
+    def construct_graphs(self, processed_objects_path: str, window_size: int, overlap: int, selected_class: int):
 
         # Initialize
         self.window_size = window_size
         self.overlap = overlap
+        self.selected_class = selected_class
 
         # Make a final assertion to ensure they match
         start_time = time.time()
@@ -186,7 +189,7 @@ class GraphConstructor:
                 labels = torch.LongTensor(np.where(labels)[1])
 
                 adj_spatial, adj_temporal = gutils.construct_iou_adjacency_matrix(
-                    frame_window_classes, frame_window_boxes, total_object_count)
+                    frame_window_classes, frame_window_boxes, total_object_count, self.selected_class)
                 edge_index_spatial = adj_spatial.nonzero().t()
                 edge_index_spatial = edge_index_spatial.to(torch.long)
                 edge_weight_spatial = adj_spatial[edge_index_spatial[0], edge_index_spatial[1]]
