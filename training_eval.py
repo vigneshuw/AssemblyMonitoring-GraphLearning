@@ -1,6 +1,8 @@
 #%%
 import os
 import pickle
+import sys
+
 import yaml
 import glob
 import trainer
@@ -24,10 +26,15 @@ graph_overlap = cfg['graph']['overlap']
 # Identify graph names
 graph_dir = os.path.join(processed_graphs, f"w{graph_window}-o{graph_overlap}")
 graph_paths = glob.glob(graph_dir + '/*.pkl')
+if len(graph_paths) == 0:
+    graph_paths = glob.glob(graph_dir + "/*")
+    if len(graph_paths) == 0:
+        sys.stdout.write("Cannot find processed graphs. Exiting...")
+
 print("Total number of available videos: ", len(graph_paths))
 
 # Configure data save information
-training_results_output_dir = os.path.join(os.getcwd(), "output", "training_eval")
+training_results_output_dir = os.path.join(os.getcwd(), "output", "training_eval", f"w{graph_window}-o{graph_overlap}")
 if not os.path.exists(training_results_output_dir):
     os.makedirs(training_results_output_dir)
 

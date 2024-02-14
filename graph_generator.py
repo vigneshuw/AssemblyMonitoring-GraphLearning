@@ -50,7 +50,7 @@ for video_path in video_paths:
                                                video_annotation_full_path, graph_window, graph_overlap)
 
         # Save the output
-        save_path = os.path.join(output_path, video_name.split(".")[0])
+        save_path = os.path.join(output_path, video_name.split(".")[0] + ".pkl")
 
         with open(save_path, "wb") as fhandle:
             pickle.dump(graph_constructor.data_list,  fhandle, protocol=pickle.HIGHEST_PROTOCOL)
