@@ -1,7 +1,9 @@
 graph:
-  processed_graphs: /data/ssm/assembly_monitoring/graph_modelling/processed_data
-  window: 15
-  overlap: 14
+  processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction
+  window: 30
+  overlap: 25
+  selected_class: 11
+  type: "WithoutHands"
 
 training:
   split_props:
@@ -16,4 +18,5 @@ training:
     - 40
     - 45
     - 50
-  batch_size: 512
+  batch_size: 256
+  output: /data1/GraphModellingExperiments/L10/TrainEval

@@ -21,7 +21,8 @@ for video_object_path in video_object_paths:
     video_object_locations[video_object_path] = os.listdir(video_object_path)
 
 # Output path for saving the processed videos
-output_path = os.path.join(cfg['output_path'], f"w{str(graph_window)}-o{graph_overlap}")
+output_path = os.path.join(cfg['output_path'], "GraphConstruction", cfg['graph']["type"], f"sc-{selected_class}",
+                           f"w{str(graph_window)}-o{graph_overlap}")
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
@@ -50,7 +51,7 @@ for video_path in video_paths:
                                                video_annotation_full_path, graph_window, graph_overlap, selected_class)
 
         # Save the output
-        save_path = os.path.join(output_path, video_name.split(".")[0])
+        save_path = os.path.join(output_path, video_name.split(".")[0] + ".pkl")
 
         with open(save_path, "wb") as fhandle:
             pickle.dump(graph_constructor.data_list,  fhandle, protocol=pickle.HIGHEST_PROTOCOL)

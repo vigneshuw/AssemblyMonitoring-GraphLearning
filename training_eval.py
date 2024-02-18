@@ -22,9 +22,12 @@ with open('training_eval.yml', 'r') as f:
 processed_graphs = cfg['graph']['processed_graphs']
 graph_window = cfg['graph']['window']
 graph_overlap = cfg['graph']['overlap']
+# Class for temporal information
+selected_class = cfg['graph']['selected_class']
 
 # Identify graph names
-graph_dir = os.path.join(processed_graphs, f"w{graph_window}-o{graph_overlap}")
+graph_dir = os.path.join(processed_graphs, cfg['graph']['type'], f"sc-{selected_class}",
+                         f"w{graph_window}-o{graph_overlap}")
 graph_paths = glob.glob(graph_dir + '/*.pkl')
 if len(graph_paths) == 0:
     graph_paths = glob.glob(graph_dir + "/*")
@@ -34,7 +37,8 @@ if len(graph_paths) == 0:
 print("Total number of available videos: ", len(graph_paths))
 
 # Configure data save information
-training_results_output_dir = os.path.join(os.getcwd(), "output", "training_eval", f"w{graph_window}-o{graph_overlap}")
+training_results_output_dir = os.path.join(cfg["training"]["output"], cfg["graph"]["type"], f"sc-{selected_class}",
+                                           f"w{graph_window}-o{graph_overlap}")
 if not os.path.exists(training_results_output_dir):
     os.makedirs(training_results_output_dir)
 
@@ -106,7 +110,7 @@ for proportion in split_proportions:
     data_generator = trainer.TrainingDataGenerator(proportion_valid=0.3, proportion_test=0.5,
                                                    batch_size=cfg['training']['batch_size'])
     data_generator.generate_data(training_data)
-    data_generator.initiate_dataloaders()
+    data_generator.initiate_dataloaders(num_workers=4)
 
     # Construct model
     in_channels = training_data[0].num_features["frame_window"]
@@ -121,7 +125,7 @@ for proportion in split_proportions:
     model_trainer = trainer.Trainer(
         model, optimizer, loss_fn,
         (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
-        gpu_ids=(2,))
+        gpu_ids=(3,))
     # Train
     model_trainer.train(epochs=500)
     

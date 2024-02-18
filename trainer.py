@@ -55,13 +55,14 @@ class TrainingDataGenerator:
         print(f'Number of validation graphs: {len(self.valid_dataset)}')
         print(f'Number of testing graphs: {len(self.test_dataset)}')
 
-    def initiate_dataloaders(self):
+    def initiate_dataloaders(self, num_workers=1):
         # Generate DataLoaders
         self.train_dataloader = DataLoader(self.train_dataset, batch_size=self.batch_size, pin_memory=True,
-                                           shuffle=True)
+                                           shuffle=True, num_workers=num_workers)
         self.valid_dataloader = DataLoader(self.valid_dataset, batch_size=self.batch_size, pin_memory=True,
-                                           shuffle=True)
-        self.test_dataloader = DataLoader(self.test_dataset, batch_size=self.batch_size, pin_memory=True, shuffle=True)
+                                           shuffle=True, num_workers=num_workers)
+        self.test_dataloader = DataLoader(self.test_dataset, batch_size=self.batch_size, pin_memory=True, shuffle=True,
+                                          num_workers=num_workers)
 
         # Get the label
         self.train_labels = torch.tensor([data['frame_window'].y for data in self.train_dataset])
