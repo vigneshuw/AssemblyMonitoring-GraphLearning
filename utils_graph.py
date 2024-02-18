@@ -121,7 +121,7 @@ def bb_intersection_over_union(boxA, boxB):
     return iou
 
 
-def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_boxes: object, total_object_count: object, selected_class: int) -> object:
+def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_boxes: object, total_object_count: object, selected_classes: list) -> object:
     # Initialize the adjacency matrix for the entire frame window
     iou_matrix_list = []
     class_indices = []
@@ -168,11 +168,11 @@ def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_bo
                 continue
             if frame_class_i != frame_class_j:
                 continue
-            elif frame_class_i == selected_class and frame_class_j != selected_class:
+            elif frame_class_i == selected_classes and frame_class_j != selected_classes:
                 continue
-            elif frame_class_i != selected_class and frame_class_j == selected_class:
+            elif frame_class_i != selected_classes and frame_class_j == selected_classes:
                 continue
-            elif frame_class_i != selected_class and frame_class_j != selected_class:
+            elif frame_class_i != selected_classes and frame_class_j != selected_classes:
                 continue
             else:
                 iou = bb_intersection_over_union(frame_box_i, frame_box_j)
