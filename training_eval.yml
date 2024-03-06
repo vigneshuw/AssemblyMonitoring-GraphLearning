@@ -1,8 +1,8 @@
 graph:
   processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction
   window: 30
-  overlap: 25
-  selected_class: 11
+  overlap: 29
+  selected_class: 12
   type: "WithoutHands"
 
 training:
@@ -18,5 +18,5 @@ training:
     - 40
     - 45
     - 50
-  batch_size: 256
+  batch_size: 512
   output: /data1/GraphModellingExperiments/L10/TrainEval

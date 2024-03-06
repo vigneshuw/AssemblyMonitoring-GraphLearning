@@ -125,7 +125,7 @@ for proportion in split_proportions:
     model_trainer = trainer.Trainer(
         model, optimizer, loss_fn,
         (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
-        gpu_ids=(3,))
+        gpu_ids=(3, ))
     # Train
     model_trainer.train(epochs=500)
     
