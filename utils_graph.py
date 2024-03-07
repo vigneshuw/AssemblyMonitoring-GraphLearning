@@ -120,8 +120,23 @@ def bb_intersection_over_union(boxA, boxB):
     # return the intersection over union value
     return iou
 
+def verify_inter_adjacency_matrices(iou_inter_matrix, class_indices, selected_classes):
+    # Check for inter IoU matrix
+    for i in range(iou_inter_matrix.shape[0]):
+        for j in range(iou_inter_matrix.shape[1]):
+            if iou_inter_matrix[i, j] != 0:
+                object_idx_i, frame_idx_i, frame_class_i, frame_box_i = class_indices[i]
+                object_idx_j, frame_idx_j, frame_class_j, frame_box_j = class_indices[j]
+                try:
+                    assert frame_idx_i != frame_idx_j, "Inter IoU matrix has non-zero values for objects in the same frame"
+                    assert frame_class_i == frame_class_j, "Inter IoU matrix has non-zero values for different object types"
+                    assert frame_class_i in selected_classes, "Inter IoU matrix has non-zero values for object types not in selected_classes"
+                except AssertionError as e:
+                    print(f"Assertion failed for i={i}, j={j}, frame_class_i={frame_class_i}, frame_class_j={frame_class_j}")
+                    raise e
 
-def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_boxes: object, total_object_count: object, selected_classes: list) -> object:
+
+def construct_iou_adjacency_matrix(frame_window_classes, frame_window_boxes, total_object_count, selected_classes):
     # Initialize the adjacency matrix for the entire frame window
     iou_matrix_list = []
     class_indices = []
@@ -140,7 +155,7 @@ def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_bo
         # Calculate IOU and update the IOU matrix for each pair of objects in the same frame #Frame
         for i, box1 in enumerate(frame_boxes):
             for j, box2 in enumerate(frame_boxes):
-                if i == j:  # skip self loop connections
+                if i == j:  # skip self loop conections
                     continue
                 iou = bb_intersection_over_union(box1, box2)
 
@@ -162,22 +177,23 @@ def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_bo
         frame_class_counts = {}
         for j, (object_idx_j, frame_idx_j, frame_class_j, frame_box_j) in enumerate(class_indices):
 
-            if i == j:  # skip self loop connections
+            if i == j:  # skip self loop conections
                 continue
             if frame_idx_i == frame_idx_j:  # skip same frame connections
                 continue
             if frame_class_i != frame_class_j:
                 continue
-            elif frame_class_i == selected_classes and frame_class_j != selected_classes:
+            elif frame_class_i in selected_classes and frame_class_j not in selected_classes:
                 continue
-            elif frame_class_i != selected_classes and frame_class_j == selected_classes:
+            elif frame_class_i not in selected_classes and frame_class_j in selected_classes:
                 continue
-            elif frame_class_i != selected_classes and frame_class_j != selected_classes:
+            elif frame_class_i not in selected_classes and frame_class_j not in selected_classes:
                 continue
-            else:
+            elif frame_class_i == frame_class_j and frame_class_i in selected_classes and frame_class_j in selected_classes:
                 iou = bb_intersection_over_union(frame_box_i, frame_box_j)
                 iou_inter_matrix[i, j] = iou
                 iou_inter_matrix[j, i] = iou
+            verify_inter_adjacency_matrices(iou_inter_matrix, class_indices, selected_classes)
 
             if frame_class_j not in frame_class_counts:
                 frame_class_counts[frame_class_j] = {}
@@ -189,7 +205,9 @@ def construct_iou_adjacency_matrix(frame_window_classes: object, frame_window_bo
                 frame_class_counts[frame_class_j][frame_idx_j]['object_ids'].append(object_idx_j)
                 frame_class_counts[frame_class_j][frame_idx_j]['bounding_boxes'].append(frame_box_j)
 
+    #     adj_matrix = iou_intra_matrix + iou_inter_matrix
     iou_inter_matrix = torch.tensor(iou_inter_matrix, dtype=torch.float32)
     iou_intra_matrix = torch.tensor(iou_intra_matrix, dtype=torch.float32)
 
     return iou_intra_matrix, iou_inter_matrix
+
