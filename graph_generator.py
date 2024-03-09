@@ -17,13 +17,18 @@ video_object_paths = cfg['video_object_paths']
 graph_window = cfg['graph']["window"]
 graph_overlap = cfg['graph']["overlap"]
 selected_class = cfg['graph']["selected_class"]
+
 # List all the videos inside the object paths
 video_object_locations = {}
 for video_object_path in video_object_paths:
     video_object_locations[video_object_path] = os.listdir(video_object_path)
 
 # Output path for saving the processed videos
-output_path = os.path.join(cfg['output_path'], "GraphConstruction", cfg['graph']["type"], f"sc-{selected_class}",
+if len(selected_class) > 1:
+    class_save_dir = "sc-" + "-".join([str(x) for x in selected_class])
+else:
+    class_save_dir = "sc-" + selected_class[0]
+output_path = os.path.join(cfg['output_path'], "GraphConstruction", cfg['graph']["type"], class_save_dir,
                            f"w{str(graph_window)}-o{graph_overlap}")
 if not os.path.exists(output_path):
     os.makedirs(output_path)

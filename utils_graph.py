@@ -175,6 +175,10 @@ def construct_iou_adjacency_matrix(frame_window_classes, frame_window_boxes, tot
 
     for i, (object_idx_i, frame_idx_i, frame_class_i, frame_box_i) in enumerate(class_indices):
         frame_class_counts = {}
+
+        if frame_class_i not in selected_classes:
+            continue
+
         for j, (object_idx_j, frame_idx_j, frame_class_j, frame_box_j) in enumerate(class_indices):
 
             if i == j:  # skip self loop conections
@@ -183,17 +187,11 @@ def construct_iou_adjacency_matrix(frame_window_classes, frame_window_boxes, tot
                 continue
             if frame_class_i != frame_class_j:
                 continue
-            elif frame_class_i in selected_classes and frame_class_j not in selected_classes:
-                continue
-            elif frame_class_i not in selected_classes and frame_class_j in selected_classes:
-                continue
-            elif frame_class_i not in selected_classes and frame_class_j not in selected_classes:
-                continue
-            elif frame_class_i == frame_class_j and frame_class_i in selected_classes and frame_class_j in selected_classes:
+            else:
                 iou = bb_intersection_over_union(frame_box_i, frame_box_j)
                 iou_inter_matrix[i, j] = iou
                 iou_inter_matrix[j, i] = iou
-            verify_inter_adjacency_matrices(iou_inter_matrix, class_indices, selected_classes)
+            # verify_inter_adjacency_matrices(iou_inter_matrix, class_indices, selected_classes)
 
             if frame_class_j not in frame_class_counts:
                 frame_class_counts[frame_class_j] = {}

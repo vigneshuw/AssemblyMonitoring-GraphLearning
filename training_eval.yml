@@ -1,8 +1,10 @@
 graph:
   processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction
-  window: 30
-  overlap: 29
-  selected_class: 12
+  window: 15
+  overlap: 14
+  selected_class:
+    - 11
+    - 12
   type: "WithoutHands"
 
 training:

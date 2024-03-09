@@ -54,6 +54,9 @@ class GraphConstructor:
     def process_single_video(self, processed_objects_path, video_path, annotation_path, window_size, overlap,
                              selected_class):
 
+        # Ensure the selected_class object is a list
+        assert isinstance(selected_class, list), "The selected class object should be list"
+
         self.training_videos_fullpath = [video_path]
         self.training_annotations_fullpath = [annotation_path]
 
@@ -65,7 +68,7 @@ class GraphConstructor:
 
         return self.data_list
 
-    def construct_graphs(self, processed_objects_path: str, window_size: int, overlap: int, selected_class: int):
+    def construct_graphs(self, processed_objects_path: str, window_size: int, overlap: int, selected_class: list):
 
         # Initialize
         self.window_size = window_size

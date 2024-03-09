@@ -25,8 +25,13 @@ graph_overlap = cfg['graph']['overlap']
 # Class for temporal information
 selected_class = cfg['graph']['selected_class']
 
+if len(selected_class) > 1:
+    class_save_dir = "sc-" + "-".join([str(x) for x in selected_class])
+else:
+    class_save_dir = "sc-" + selected_class[0]
+
 # Identify graph names
-graph_dir = os.path.join(processed_graphs, cfg['graph']['type'], f"sc-{selected_class}",
+graph_dir = os.path.join(processed_graphs, cfg['graph']['type'], f"{class_save_dir}",
                          f"w{graph_window}-o{graph_overlap}")
 graph_paths = glob.glob(graph_dir + '/*.pkl')
 if len(graph_paths) == 0:
@@ -37,7 +42,7 @@ if len(graph_paths) == 0:
 print("Total number of available videos: ", len(graph_paths))
 
 # Configure data save information
-training_results_output_dir = os.path.join(cfg["training"]["output"], cfg["graph"]["type"], f"sc-{selected_class}",
+training_results_output_dir = os.path.join(cfg["training"]["output"], cfg["graph"]["type"], f"{class_save_dir}",
                                            f"w{graph_window}-o{graph_overlap}")
 if not os.path.exists(training_results_output_dir):
     os.makedirs(training_results_output_dir)
