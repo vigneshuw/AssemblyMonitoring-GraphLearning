@@ -79,6 +79,8 @@ def process_videos(video_paths, video_object_locations, graph_window, graph_over
 #%% Multiprocessing Initialization
 # Get the number of cores to use
 num_cores = cfg["multiprocessing"]["num_cores"]
+
+
 # Load all the paths to the video
 video_names = []
 for video_path in video_paths:
@@ -87,17 +89,28 @@ for video_path in video_paths:
 # Split the graphs into num_cores segments
 video_paths_groups = np.array_split(np.array(video_names), num_cores, axis=0)
 
-# Send data to each core
-print("Assigning tasks to different CPUs")
-with concurrent.futures.ProcessPoolExecutor() as executor:
+# Do multiprocessing only when required
+if num_cores > 1:
 
-    completed_graph_processing = [executor.submit(process_videos, video_paths_group, video_object_locations,
-                                                  graph_window, graph_overlap, selected_class, output_path)
-                                  for video_paths_group in video_paths_groups]
+    # Send data to each core
+    print("Assigning tasks to different CPUs")
+    with concurrent.futures.ProcessPoolExecutor() as executor:
 
-    # Wait for all CPUs to complete
-    for result in concurrent.futures.as_completed(completed_graph_processing):
-        result.result()
+        completed_graph_processing = [executor.submit(process_videos, video_paths_group, video_object_locations,
+                                                      graph_window, graph_overlap, selected_class, output_path)
+                                      for video_paths_group in video_paths_groups]
 
-print("All the CPUs have completed processing the graphs")
+        # Wait for all CPUs to complete
+        for result in concurrent.futures.as_completed(completed_graph_processing):
+            result.result()
+
+    print("All the CPUs have completed processing the graphs")
+
+else:
+
+    print("Running computation on a single CPU core")
+
+    process_videos(video_paths_groups[0], video_object_locations, graph_window, graph_overlap, selected_class, output_path)
+
+    print("Processing complete")
 
