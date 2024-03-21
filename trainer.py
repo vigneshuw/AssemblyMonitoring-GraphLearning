@@ -35,6 +35,13 @@ class TrainingDataGenerator:
         self.class_weights = None
 
     def generate_data(self, data_items):
+
+        """
+        Generate training, validation, and testing dataset
+        @param data_items: All the graphs in an array
+        @return: None
+        """
+
         # Shuffle the data
         random.shuffle(data_items)
 
@@ -125,9 +132,6 @@ class Trainer:
         self.train_dataloader, self.valid_dataloader, self.test_dataloaders = dataloaders
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # Model
-        if torch.cuda.is_available():
-            print("Training on GPU using Distributed DataParallel")
-            self.model = torch.nn.DataParallel(self.model)
         self.model = self.model.to(self.device)
 
         # Check the weights on loss_fn

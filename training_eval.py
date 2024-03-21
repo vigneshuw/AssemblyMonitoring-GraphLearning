@@ -28,7 +28,7 @@ selected_class = cfg['graph']['selected_class']
 if len(selected_class) > 1:
     class_save_dir = "sc-" + "-".join([str(x) for x in selected_class])
 else:
-    class_save_dir = "sc-" + selected_class[0]
+    class_save_dir = "sc-" + str(selected_class[0])
 
 # Identify graph names
 graph_dir = os.path.join(processed_graphs, cfg['graph']['type'], f"{class_save_dir}",
@@ -92,6 +92,13 @@ split_proportions = cfg['training']['split_props']
 for proportion in split_proportions:
 
     print("Proportion: ", proportion)
+    # Check if directory exists - TO save training results
+    save_dir = os.path.join(training_results_output_dir, f"test-proportion-{str(proportion)}")
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+    else:
+        print(f"Trained results exist for test-proportion-{str(proportion)}")
+        continue
 
     # Get the testing and training videos
     training_graph_paths, testing_graph_paths = train_test_split(graph_paths, test_size=proportion / 100)
@@ -133,11 +140,7 @@ for proportion in split_proportions:
         gpu_ids=(3, ))
     # Train
     model_trainer.train(epochs=500)
-    
-    # Evaluate and save the results
-    save_dir = os.path.join(training_results_output_dir, f"test-proportion-{str(proportion)}")
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
+
     plot_train_results(model_trainer, save_dir)
     evaluate(model_trainer, data_generator.test_dataloader, type="integratedTest", save_dir=save_dir)
 
