@@ -9,12 +9,12 @@ video_object_paths:
 output_path: /data1/GraphModellingExperiments/L10
 
 graph:
-  window: 15
-  overlap: 14
+  window: 30
+  overlap: 29
   selected_class:
     - 11
     - 12
   type: "WithoutHands"
 
 multiprocessing:
-  num_cores: 2
+  num_cores: 1
