@@ -1,20 +1,21 @@
 video_paths:
-  - /home/vselvaraj/projects/action_localization/DATA/L10/cycles/training
-  - /home/vselvaraj/projects/action_localization/DATA/L10/cycles/testing
+  - /home/vselvaraj/projects/action_localization/DATA/AssemblyDemo/cycles/training
+  - /home/vselvaraj/projects/action_localization/DATA/AssemblyDemo/cycles/testing
 
 video_object_paths:
-  - /data1/GraphModellingExperiments/L10/ObjectDetections/Detectron2/WithoutHands/RPN_Train_Results
-  - /data1/GraphModellingExperiments/L10/ObjectDetections/Detectron2/WithoutHands/RPN_Test_Results
+  - /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Train_Results
+  - /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Test_Results
 
-output_path: /data1/GraphModellingExperiments/L10
+output_path: /data1/GraphModellingExperiments/AssemblyDemo
 
 graph:
   window: 30
-  overlap: 29
+  overlap: 15
   selected_class:
-    - 11
-    - 12
-  type: "WithoutHands"
+    - 1
+    - 2
+    - 6
+  type: "WithHands"
 
 multiprocessing:
   num_cores: 1

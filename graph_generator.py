@@ -27,7 +27,7 @@ for video_object_path in video_object_paths:
 if len(selected_class) > 1:
     class_save_dir = "sc-" + "-".join([str(x) for x in selected_class])
 else:
-    class_save_dir = "sc-" + selected_class[0]
+    class_save_dir = "sc-" + str(selected_class[0])
 output_path = os.path.join(cfg['output_path'], "GraphConstruction", cfg['graph']["type"], class_save_dir,
                            f"w{str(graph_window)}-o{graph_overlap}")
 if not os.path.exists(output_path):

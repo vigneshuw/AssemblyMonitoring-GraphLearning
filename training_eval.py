@@ -139,7 +139,7 @@ for proportion in split_proportions:
         (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
         gpu_ids=(3, ))
     # Train
-    model_trainer.train(epochs=500)
+    model_trainer.train(epochs=250)
 
     plot_train_results(model_trainer, save_dir)
     evaluate(model_trainer, data_generator.test_dataloader, type="integratedTest", save_dir=save_dir)
