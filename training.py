@@ -66,6 +66,8 @@ overlap = yaml_file_params[assembly]["processed_objects_information"]["training"
 selected_class = yaml_file_params[assembly]["processed_objects_information"]["training"]["selected_classes"]
 processed_graphs = yaml_file_params[assembly]["processed_graphs"]
 save_dir = os.path.join(yaml_file_params[assembly]["save_dir"], f"w{window_size}-o{overlap}")
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
 
 # Videos directory
 training_video_dir = yaml_file_params[assembly]["data_dir"]["training"]
