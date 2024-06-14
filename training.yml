@@ -1,27 +1,26 @@
 L10:
-
   data_dir:
     training: /home/vselvaraj/projects/action_localization/DATA/L10/cycles/training
     testing: /home/vselvaraj/projects/action_localization/DATA/L10/cycles/testing
-  processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction/WithoutHands
+  processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction/WithoutHands/C3D
 
   processed_objects_information:
     training:
-      path: /data1/GraphModellingExperiments/L10/ObjectDetections/Detectron2/WithoutHands/RPN_Train_Results
+      path: /data1/GraphModellingExperiments/L10/ObjectDetections/C3D/WithoutHands/RPN_Train_Results
       window_size: 15
       overlap: 14
       selected_classes:
-        - 1
-        - 2
+        - 11
+        - 12
     testing:
-      path: /data1/GraphModellingExperiments/L10/ObjectDetections/Detectron2/WithHands/RPN_Test_Results
+      path: /data1/GraphModellingExperiments/L10/ObjectDetections/C3D/WithoutHands/RPN_Test_Results
       window_size: 15
       overlap: 14
       selected_classes:
-        - 1
-        - 2
+        - 11
+        - 12
 
-  save_dir: /data1/GraphModellingExperiments/AssemblyDemo/TrainEvalComp
+  save_dir: /data1/GraphModellingExperiments/L10/TrainEvalComp
 
 AssemblyDemo:
   data_dir:
@@ -32,15 +31,15 @@ AssemblyDemo:
   processed_objects_information:
     training:
       path: /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Train_Results
-      window_size: 15
-      overlap: 14
+      window_size: 30
+      overlap: 15
       selected_classes:
         - 1
         - 2
     testing:
       path: /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Test_Results
-      window_size: 15
-      overlap: 14
+      window_size: 30
+      overlap: 15
       selected_classes:
         - 1
         - 2

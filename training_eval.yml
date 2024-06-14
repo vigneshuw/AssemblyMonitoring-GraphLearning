@@ -1,17 +1,17 @@
 graph:
-  processed_graphs: /data1/GraphModellingExperiments/AssemblyDemo/GraphConstruction
+  processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction
   window: 30
   overlap: 15
   selected_class:
-    - 1
-    - 2
-    - 6
-  type: "WithHands"
+    - 11
+    - 12
+  type: "WithoutHands"
+  obj_features: "C3D"
 
 training:
   split_props:
     - 15
     - 30
     - 50
-  batch_size: 256
-  output: /data1/GraphModellingExperiments/AssemblyDemo/TrainEval
+  batch_size: 128
+  output: /data1/GraphModellingExperiments/L10/TrainEval

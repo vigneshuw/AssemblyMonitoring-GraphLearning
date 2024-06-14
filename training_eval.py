@@ -31,7 +31,7 @@ else:
     class_save_dir = "sc-" + str(selected_class[0])
 
 # Identify graph names
-graph_dir = os.path.join(processed_graphs, cfg['graph']['type'], f"{class_save_dir}",
+graph_dir = os.path.join(processed_graphs, cfg['graph']['type'], cfg['graph']['obj_features'], f"{class_save_dir}",
                          f"w{graph_window}-o{graph_overlap}")
 graph_paths = glob.glob(graph_dir + '/*.pkl')
 if len(graph_paths) == 0:
@@ -42,7 +42,8 @@ if len(graph_paths) == 0:
 print("Total number of available videos: ", len(graph_paths))
 
 # Configure data save information
-training_results_output_dir = os.path.join(cfg["training"]["output"], cfg["graph"]["type"], f"{class_save_dir}",
+training_results_output_dir = os.path.join(cfg["training"]["output"], cfg["graph"]["type"],
+                                           cfg["graph"]["obj_features"], f"{class_save_dir}",
                                            f"w{graph_window}-o{graph_overlap}")
 if not os.path.exists(training_results_output_dir):
     os.makedirs(training_results_output_dir)
@@ -132,14 +133,14 @@ for proportion in split_proportions:
     model = RGCN(in_channels, hidden_channels, output_channels, num_layers)
 
     # Start the training process
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.00001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     loss_fn = torch.nn.CrossEntropyLoss(weight=data_generator.class_weights)
     model_trainer = trainer.Trainer(
         model, optimizer, loss_fn,
         (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
         gpu_ids=(3, ))
     # Train
-    model_trainer.train(epochs=250)
+    model_trainer.train(epochs=500)
 
     plot_train_results(model_trainer, save_dir)
     evaluate(model_trainer, data_generator.test_dataloader, type="integratedTest", save_dir=save_dir)

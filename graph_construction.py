@@ -134,6 +134,9 @@ class GraphConstructor:
                         if os.path.exists(frame_path):
                             with open(frame_path, 'rb') as handle:
                                 frame_metadata = pickle.load(handle)
+                                # Convert to a tensor if it is a numpy array
+                                if isinstance(frame_metadata["features"], np.ndarray):
+                                    frame_metadata['features'] = torch.Tensor(frame_metadata['features'])
                                 frame_metadata['features'] = frame_metadata['features'].cpu()
                                 frame_metadata_list.append(
                                     frame_metadata)  # store corresponding metadata for each frame window
