@@ -49,13 +49,23 @@ def evaluate(model_trainer, dataloader, type, save_dir):
     save_file = f"classification_report-{type}.csv"
     report_df.to_csv(os.path.join(save_dir, save_file), index=True)
 
+    # Save the actual predictions and labels
+    conf_mat = {
+        "labels": result[-2],
+        "predictions": result[-1],
+    }
+    save_file = F"confusion-matrix-{type}.pkl"
+    pickle.dump(conf_mat, open(os.path.join(save_dir, save_file), "wb"), protocol=pickle.HIGHEST_PROTOCOL)
+
+    print("All information saved successfully!")
+
 #%% Construct Graphs
 # Open the YAML file
 with open("training.yml", "r") as filehandle:
     yaml_file_params = yaml.load(filehandle, Loader=yaml.FullLoader)
 
 # Initiate the data params
-assembly = "AssemblyDemo"
+assembly = yaml_file_params["assembly_selected"]
 graph_constructor = GraphConstructor(data_params=yaml_file_params, assembly=assembly)
 
 # Load annotation
@@ -108,7 +118,7 @@ else:
 
 #%% Create DataLoaders
 
-data_generator = trainer.TrainingDataGenerator(proportion_valid=0.3, proportion_test=0.5, batch_size=128)
+data_generator = trainer.TrainingDataGenerator(proportion_valid=0.3, proportion_test=0.5, batch_size=256)
 data_generator.generate_data(training_data)
 data_generator.initiate_dataloaders(num_workers=4)
 
@@ -119,14 +129,14 @@ num_layers = 2
 output_channels = len(data_generator.unique_labels)
 model = RGCN(in_channels, hidden_channels, output_channels, num_layers)
 # Start the training process
-optimizer = torch.optim.Adam(model.parameters(), lr=0.00001)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.00001, weight_decay=1e-5)
 loss_fn = torch.nn.CrossEntropyLoss(weight=data_generator.class_weights)
 model_trainer = trainer.Trainer(
     model, optimizer, loss_fn,
     (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
     gpu_ids=(3, ))
 # Train
-model_trainer.train(epochs=250)
+model_trainer.train(epochs=100)
 plot_train_results(model_trainer, save_dir)
 # Integrated test
 evaluate(model_trainer, data_generator.test_dataloader, type="integratedTest", save_dir=save_dir)
@@ -140,7 +150,7 @@ for graph_path in testing_graph_paths:
 print(f"Total number of testing graphs are {len(testing_data)}")
 
 # Evaluate on the new unseen test data
-test_data_generator = trainer.TestingDataGenerator(batch_size=128)
+test_data_generator = trainer.TestingDataGenerator(batch_size=256)
 test_data_generator.generate_data(testing_data)
 test_data_generator.initiate_dataloaders()
 evaluate(model_trainer, test_data_generator.test_dataloader, type="unseenTest", save_dir=save_dir)

@@ -59,13 +59,13 @@ class RGCN(nn.Module):
                                                       self.batch_norms1, self.batch_norms2, self.batch_norms3):
             gc1 = conv1(x_dict, edge_index_dict, edge_weight_dict)
             gc1 = {key: bn1(x.relu()) for key, x in gc1.items()}
-            #             gc1 = {key: self.dropout(bn1(x.relu())) for key, x in gc1.items()}
+            # gc1 = {key: self.dropout(bn1(x.relu())) for key, x in gc1.items()}
             gc2 = conv2(gc1, edge_index_dict, edge_weight_dict)
             gc2 = {key: bn2(x.relu()) for key, x in gc2.items()}
-            #             gc2 = {key: self.dropout(bn2(x.relu())) for key, x in gc2.items()}
+            # gc2 = {key: self.dropout(bn2(x.relu())) for key, x in gc2.items()}
             gc3 = conv3(gc2, edge_index_dict, edge_weight_dict)
             gc3 = {key: bn3(x.relu()) for key, x in gc3.items()}
-        #             gc3 = {key: self.dropout(bn3(x.relu())) for key, x in gc3.items()}
+            # gc3 = {key: self.dropout(bn3(x.relu())) for key, x in gc3.items()}
 
         out1 = global_mean_pool(gc3['frame_window'], batch)
         out2 = global_add_pool(gc3['frame_window'], batch)
