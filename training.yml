@@ -1,39 +1,39 @@
 # Selected assembly - For Processing
-assembly_selected: "L10"
+assembly_selected: "AssemblyDemo"
 
 L10:
   data_dir:
     training: /data1/GraphModellingExperiments/Training/L10/cycles/training
     testing: /data1/GraphModellingExperiments/Training/L10/cycles/testing
-  processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction/WithoutHands/Detectron2
+  processed_graphs: /data1/GraphModellingExperiments/L10/GraphConstruction/WithoutHands/C3D/Old
 
   processed_objects_information:
     training:
-      path: /data1/GraphModellingExperiments/L10/ObjectDetections/Detectron2/WithoutHands/RPN_Train_Results
+      path: /data1/GraphModellingExperiments/L10/ObjectDetections/C3D/WithoutHands-New/RPN_Train_Results
       window_size: 30
       overlap: 29
       selected_classes:
         - 11
         - 12
     testing:
-      path: /data1/GraphModellingExperiments/L10/ObjectDetections/Detectron2/WithoutHands/RPN_Test_Results
+      path: /data1/GraphModellingExperiments/L10/ObjectDetections/C3D/WithoutHands-New/RPN_Test_Results
       window_size: 30
       overlap: 29
       selected_classes:
         - 11
         - 12
 
-  save_dir: /data1/GraphModellingExperiments/L10/IEEEPaper/Detectron2
+  save_dir: /data1/GraphModellingExperiments/L10/IEEEPaper/C3D
 
 AssemblyDemo:
   data_dir:
     training: /data1/GraphModellingExperiments/Training/AssemblyDemo/cycles/training
     testing: /data1/GraphModellingExperiments/Training/AssemblyDemo/cycles/testing
-  processed_graphs: /data1/GraphModellingExperiments/AssemblyDemo/GraphConstruction/WithHands
+  processed_graphs: /data1/GraphModellingExperiments/AssemblyDemo/GraphConstruction/WithHands/C3D
 
   processed_objects_information:
     training:
-      path: /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Train_Results
+      path: /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/C3D/WithHands/RPN_Train_Results
       window_size: 30
       overlap: 29
       selected_classes:
@@ -41,7 +41,7 @@ AssemblyDemo:
         - 2
         - 8
     testing:
-      path: /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Test_Results
+      path: /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/C3D/WithHands/RPN_Test_Results
       window_size: 30
       overlap: 29
       selected_classes:
@@ -49,6 +49,6 @@ AssemblyDemo:
         - 2
         - 8
 
-  save_dir: /data1/GraphModellingExperiments/AssemblyDemo/IEEEPaper/Detectron2
+  save_dir: /data1/GraphModellingExperiments/AssemblyDemo/IEEEPaper/C3D
 
 

@@ -5,7 +5,7 @@ import glob
 from tqdm import tqdm
 
 #%% Load the files for conversion
-directory_name = "/data1/GraphModellingExperiments/L10/ObjectDetections/C3D/WithoutHands/RPN_Train_Results-UnreasonablyLarge"
+directory_name = "/data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/C3D/WithHands/RPN_Train_Results"
 pickle_files = glob.glob(directory_name + "/**/*.pickle")
 
 
@@ -32,7 +32,7 @@ for file in tqdm(pickle_files):
 
 
 #%% Load to check the file
-path = "/data1/GraphModellingExperiments/L10/ObjectDetections/C3D/WithoutHands/RPN_Test_Results/WIN_20220131_10_14_12_Pro_Jan31_cycle3/1115.pickle"
+path = "/data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/C3D/WithHands/RPN_Train_Results/cycle_47/4581.pickle"
 with open(path, "rb") as f:
     data = pickle.load(f)
 

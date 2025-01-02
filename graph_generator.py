@@ -1,4 +1,5 @@
 #%% Imports
+import argparse
 import os
 import numpy as np
 import concurrent.futures
@@ -7,10 +8,20 @@ import yaml
 import pickle
 from graph_construction import GraphConstructor
 
+# Load the arguments
+parser = argparse.ArgumentParser(allow_abbrev=False, description='Choose the right assembly for graph construction')
+parser.add_argument("assembly", metavar="assembly", type=str, help="Assembly to use for graph construction")
+# Parse the arguments
+args = parser.parse_args()
+
 #%% Configuration
 # Load configuration
 with open("graph_generator.yml", 'r') as ymlfile:
     cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
+
+# Update config based on assembly
+cfg = cfg[args.assembly]
+
 video_paths = cfg['video_paths']
 video_object_paths = cfg['video_object_paths']
 # Graph Information
@@ -28,7 +39,7 @@ if len(selected_class) > 1:
     class_save_dir = "sc-" + "-".join([str(x) for x in selected_class])
 else:
     class_save_dir = "sc-" + str(selected_class[0])
-output_path = os.path.join(cfg['output_path'], "GraphConstruction", cfg['graph']["type"], class_save_dir,
+output_path = os.path.join(cfg['output_path'], "GraphConstruction", cfg['graph']["type"], cfg['graph']["feature_type"] ,class_save_dir,
                            f"w{str(graph_window)}-o{graph_overlap}")
 if not os.path.exists(output_path):
     os.makedirs(output_path)
