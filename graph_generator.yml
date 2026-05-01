@@ -27,8 +27,8 @@ AssemblyDemo:
     - /data1/GraphModellingExperiments/Training/AssemblyDemo/cycles/testing
 
   video_object_paths:
-    - /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/C3D/WithHands/RPN_Train_Results
-    - /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/C3D/WithHands/RPN_Test_Results
+    - /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Train_Results
+    - /data1/GraphModellingExperiments/AssemblyDemo/ObjectDetections/Detectron2/WithHands/RPN_Test_Results
 
   output_path: /data1/GraphModellingExperiments/AssemblyDemo
 
@@ -36,11 +36,9 @@ AssemblyDemo:
     window: 30
     overlap: 29
     selected_class:
-      - 1
-      - 2
       - 8
     type: "WithHands"
-    feature_type: "C3D"
+    feature_type: "Detectron2"
 
   multiprocessing:
     num_cores: 1

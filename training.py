@@ -76,9 +76,12 @@ window_size = yaml_file_params[assembly]["processed_objects_information"]["train
 overlap = yaml_file_params[assembly]["processed_objects_information"]["training"]["overlap"]
 selected_class = yaml_file_params[assembly]["processed_objects_information"]["training"]["selected_classes"]
 processed_graphs = yaml_file_params[assembly]["processed_graphs"]
-save_dir = os.path.join(yaml_file_params[assembly]["save_dir"], f"w{window_size}-o{overlap}")
+temp_sc = [str(x) for x in selected_class]
+save_dir = os.path.join(yaml_file_params[assembly]["save_dir"], "sc-" + "-".join(temp_sc),
+                        f"w{window_size}-o{overlap}")
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
+print(f"All the models will be saved at -> {save_dir}")
 
 # Videos directory
 training_video_dir = yaml_file_params[assembly]["data_dir"]["training"]
@@ -137,7 +140,7 @@ model_trainer = trainer.Trainer(
     (data_generator.train_dataloader, data_generator.valid_dataloader, data_generator.test_dataloader),
     gpu_ids=(3, ))
 # Train
-model_trainer.train(epochs=100)
+model_trainer.train(epochs=200)
 plot_train_results(model_trainer, save_dir)
 # Integrated test
 evaluate(model_trainer, data_generator.test_dataloader, type="integratedTest", save_dir=save_dir)
@@ -155,3 +158,14 @@ test_data_generator = trainer.TestingDataGenerator(batch_size=256)
 test_data_generator.generate_data(testing_data)
 test_data_generator.initiate_dataloaders()
 evaluate(model_trainer, test_data_generator.test_dataloader, type="unseenTest", save_dir=save_dir)
+
+#%% Save the trained model
+model_save_dict = {
+    "model": {
+        "model_state_dict": model.state_dict(),
+        "in_channels": in_channels,
+        "hidden_channels": hidden_channels,
+        "output_channels": output_channels,
+        "num_layers": num_layers}
+}
+torch.save(model_save_dict, os.path.join(save_dir, "gcn.pt"))
